@@ -1,0 +1,47 @@
+@startuml
+
+title Diagrama de Classes - Projeto Certifica (IFMA)
+
+class Usuario {
+    - email
+    - id
+    - nome
+
+    + __init__()
+}
+
+class Participante {
+    - inscricoes
+    - matricula
+
+    + __init__()
+}
+
+class Evento {
+    - carga_horaria
+    - inscricoes
+    - status
+    - titulo
+
+    + __init__()
+}
+
+class Inscricao {
+    - aprovado
+    - evento
+    - frequencia_horas
+    - participante
+    - verificar_aprovacao
+
+    + __init__()
+    + registrar_frequencia()
+    + verificar_aprovacao()
+}
+
+Usuario <|-- Participante
+
+legend left
+  Gerado automaticamente via Script AST
+endlegend
+
+@enduml
