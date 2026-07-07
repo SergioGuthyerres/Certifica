@@ -2,6 +2,46 @@
 
 Sistema de gerenciamento de eventos com emissão de certificados.
 
+## Descrição
+O Certifica é um sistema de gerenciamento de eventos que automatiza esse fluxo: cadastro de eventos e atividades, inscrição de participantes, registro de frequência e emissão automática de certificados para quem atinge a carga horária mínima exigida (75%).
+
+
+## Integrantes
+
+- Ester Martins
+- Bruno Vital
+- Sérgio Guthyerres
+- Rafael Carvalho
+
+## Funcionalidades
+
+
+- Cadastro de usuários com três perfis distintos: Participante, Organizador e Palestrante
+- Cadastro de locais e eventos, com definição de carga horária e status
+- Cadastro de atividades vinculadas a um evento, associadas a um palestrante
+- Inscrição de participantes em eventos, com validação de duplicidade
+- Registro de frequência (horas) por inscrição, com aprovação automática ao atingir 75% da carga horária
+- Emissão de certificado com código de validação único, apenas para inscrições aprovadas
+- Consulta e validação pública de certificados pelo código
+
+## Conceitos de POO utilizados
+- Classes e objetos
+- Encapsulamento
+- Herança
+- Polimorfismo
+- Associação
+- Agregação
+- Composição
+
+## Diagramas de Classes
+O diagrama de classes (PlantUML) está na pasta [`diagramas-UML/`](./diagramas-UML).
+ 
+Para gerar a imagem do diagrama:
+```bash
+python diagramas-UML/gerar_diagrama.py
+```
+
+
 ## Arquitetura
 
 ```
