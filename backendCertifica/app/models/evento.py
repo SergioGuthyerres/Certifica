@@ -39,7 +39,7 @@ class Evento:
 
     @descricao.setter
     def descricao(self, valor: str):
-        self._descricao = valor.strip()
+        self._descricao = (valor or "").strip()
 
     @property
     def data(self) -> datetime:
