@@ -5,6 +5,7 @@ import { validacao } from "../services/api"
 import type { ValidacaoCertificado } from "../types"
 import Alerta from "../components/Alerta"
 import { mensagemErro } from "../utils/erro"
+import { ShieldCheck, Search, CheckCircle2, XCircle, Calendar, Clock, Award, User } from "lucide-react"
 
 export default function ValidarCertificado() {
   const { codigo: codigoDaUrl } = useParams<{ codigo?: string }>()
@@ -39,65 +40,145 @@ export default function ValidarCertificado() {
   }
 
   return (
-    <div className="mx-auto max-w-lg">
-      <h1 className="text-2xl font-bold text-slate-800 mb-1">Validar certificado</h1>
-      <p className="text-slate-500 mb-6">Informe o código de verificação impresso no certificado.</p>
-
-      <form onSubmit={aoEnviar} className="flex gap-2">
-        <input
-          value={codigo}
-          onChange={(e) => setCodigo(e.target.value)}
-          placeholder="Código de verificação (UUID)"
-          className="flex-1 rounded-md border border-slate-300 px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-        <button
-          type="submit"
-          disabled={consultando}
-          className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 disabled:opacity-60"
-        >
-          {consultando ? "Validando..." : "Validar"}
-        </button>
-      </form>
-
-      {erro && (
-        <div className="mt-6">
-          <Alerta tipo="erro">{erro}</Alerta>
+    <div className="min-h-[calc(100vh-130px)] flex items-center justify-center p-4 md:p-8">
+      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl shadow-slate-200/60 border border-slate-100 p-6 md:p-10">
+        
+        {/* Cabeçalho do Card */}
+        <div className="text-center mb-8">
+          <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-[#1B4332] border border-emerald-100 flex items-center justify-center mx-auto mb-3 shadow-xs">
+            <ShieldCheck className="w-6 h-6" />
+          </div>
+          <h1 className="text-2xl md:text-3xl font-bold text-[#1B4332]">
+            Validação Pública de Certificado
+          </h1>
+          <p className="text-sm text-slate-500 mt-1 max-w-md mx-auto">
+            Digite o código autenticador ou identificador UUID presente no rodapé do documento para atestar sua veracidade.
+          </p>
         </div>
-      )}
 
-      {resultado && (
-        <div className="mt-6">
-          {resultado.valido ? (
-            <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-5">
-              <p className="font-semibold text-emerald-700 mb-3">✓ Certificado válido</p>
-              <dl className="space-y-1 text-sm text-emerald-900">
-                <div>
-                  <dt className="inline text-emerald-600">Participante: </dt>
-                  <dd className="inline font-medium">{resultado.nome_participante}</dd>
-                </div>
-                <div>
-                  <dt className="inline text-emerald-600">Evento: </dt>
-                  <dd className="inline font-medium">{resultado.nome_evento}</dd>
-                </div>
-                <div>
-                  <dt className="inline text-emerald-600">Data do evento: </dt>
-                  <dd className="inline font-medium">{resultado.data_evento}</dd>
-                </div>
-                <div>
-                  <dt className="inline text-emerald-600">Carga horária: </dt>
-                  <dd className="inline font-medium">{resultado.carga_horaria}h</dd>
-                </div>
-                <div>
-                  <dt className="inline text-emerald-600">Emitido em: </dt>
-                  <dd className="inline font-medium">{resultado.emitido_em}</dd>
-                </div>
-              </dl>
+        {/* Formulário de Busca */}
+        <form onSubmit={aoEnviar} className="space-y-4">
+          <div>
+            <label className="block text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+              Código de Verificação (UUID)
+            </label>
+            <div className="flex flex-col sm:flex-row gap-2.5">
+              <div className="relative flex-1">
+                <input
+                  required
+                  value={codigo}
+                  onChange={(e) => setCodigo(e.target.value)}
+                  placeholder="Ex: c1a8f9b2-3e4d-5f6a-7b8c-9d0e1f2a3b4c"
+                  className="w-full rounded-xl bg-slate-50 border border-slate-200 pl-4 pr-10 py-3 text-sm font-mono text-slate-800 placeholder-slate-400 focus:bg-white focus:border-[#1B4332] focus:ring-1 focus:ring-[#1B4332] focus:outline-none transition-all"
+                />
+                <Search className="w-4 h-4 text-slate-400 absolute right-3.5 top-3.5 pointer-events-none" />
+              </div>
+              <button
+                type="submit"
+                disabled={consultando}
+                className="rounded-xl bg-[#1B4332] hover:bg-[#143326] text-white px-6 py-3 text-sm font-semibold shadow-md shadow-emerald-950/10 transition-all disabled:opacity-60 flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+              >
+                {consultando ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <span>Validando...</span>
+                  </>
+                ) : (
+                  <span>Validar Certificado</span>
+                )}
+              </button>
             </div>
-          ) : (
-            <Alerta tipo="erro">{resultado.erro ?? "Certificado não encontrado"}</Alerta>
-          )}
-        </div>
-      )}
+          </div>
+        </form>
+
+        {/* Mensagem de Erro de Requisição */}
+        {erro && (
+          <div className="mt-6">
+            <Alerta tipo="erro">{erro}</Alerta>
+          </div>
+        )}
+
+        {/* Feedback / Resultado da Consulta */}
+        {resultado && (
+          <div className="mt-8 pt-6 border-t border-slate-100 animate-in fade-in duration-300">
+            {resultado.valido ? (
+              <div className="rounded-2xl border border-emerald-200 bg-emerald-50/70 p-6">
+                <div className="flex items-center gap-2.5 text-emerald-800 font-bold text-base mb-4 pb-3 border-b border-emerald-200/60">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+                  <span>Certificado Autêntico e Válido</span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div className="flex items-start gap-2.5">
+                    <User className="w-4 h-4 text-emerald-700 mt-0.5 shrink-0" />
+                    <div>
+                      <span className="block text-[11px] font-bold uppercase tracking-wider text-emerald-700">
+                        Participante
+                      </span>
+                      <span className="font-semibold text-emerald-950">
+                        {resultado.nome_participante}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2.5">
+                    <Award className="w-4 h-4 text-emerald-700 mt-0.5 shrink-0" />
+                    <div>
+                      <span className="block text-[11px] font-bold uppercase tracking-wider text-emerald-700">
+                        Evento
+                      </span>
+                      <span className="font-semibold text-emerald-950">
+                        {resultado.nome_evento}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2.5">
+                    <Calendar className="w-4 h-4 text-emerald-700 mt-0.5 shrink-0" />
+                    <div>
+                      <span className="block text-[11px] font-bold uppercase tracking-wider text-emerald-700">
+                        Data de Realização
+                      </span>
+                      <span className="text-emerald-900 font-medium">
+                        {resultado.data_evento}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2.5">
+                    <Clock className="w-4 h-4 text-emerald-700 mt-0.5 shrink-0" />
+                    <div>
+                      <span className="block text-[11px] font-bold uppercase tracking-wider text-emerald-700">
+                        Carga Horária
+                      </span>
+                      <span className="text-emerald-900 font-medium">
+                        {resultado.carga_horaria} horas
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-emerald-200/60 flex items-center justify-between text-xs text-emerald-700">
+                  <span>Emitido pelo sistema em: <strong>{resultado.emitido_em}</strong></span>
+                  <span className="font-mono text-[11px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">
+                    Status: Regular
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div className="rounded-2xl border border-red-200 bg-red-50/80 p-5 flex items-start gap-3">
+                <XCircle className="w-5 h-5 text-red-600 mt-0.5 shrink-0" />
+                <div>
+                  <h3 className="text-sm font-bold text-red-800">Certificado Inválido ou Não Encontrado</h3>
+                  <p className="text-xs text-red-700 mt-0.5">
+                    {resultado.erro ?? "O código fornecido não consta em nossa base institucional de certificados emitidos."}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

@@ -57,3 +57,7 @@ export interface ValidacaoCertificado {
   emitido_em?: string
   erro?: string
 }
+
+export interface InscricaoComEvento extends Inscrito {
+  evento?: Evento
+} 
