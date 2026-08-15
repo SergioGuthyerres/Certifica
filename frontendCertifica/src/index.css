@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+@theme {
+  --color-certifica-dark: #1b382b;
+  --color-certifica-green: #22c55e;
+  --color-certifica-bg: #f4f7f5;
+}

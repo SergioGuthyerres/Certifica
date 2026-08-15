@@ -1,18 +1,47 @@
-const CORES: Record<string, string> = {
-  aberto: "bg-emerald-100 text-emerald-700",
-  rascunho: "bg-amber-100 text-amber-700",
-  encerrado: "bg-slate-200 text-slate-600",
-  confirmado: "bg-emerald-100 text-emerald-700",
-  inscrito: "bg-sky-100 text-sky-700",
-  presente: "bg-emerald-100 text-emerald-700",
-  ausente: "bg-rose-100 text-rose-700",
+const CORES: Record<string, { bg: string; dot: string }> = {
+  aberto: {
+    bg: "bg-emerald-50 text-emerald-800 border-emerald-200/80",
+    dot: "bg-emerald-500",
+  },
+  rascunho: {
+    bg: "bg-amber-50 text-amber-800 border-amber-200/80",
+    dot: "bg-amber-500",
+  },
+  encerrado: {
+    bg: "bg-slate-100 text-slate-700 border-slate-200/80",
+    dot: "bg-slate-400",
+  },
+  confirmado: {
+    bg: "bg-emerald-50 text-emerald-800 border-emerald-200/80",
+    dot: "bg-emerald-500",
+  },
+  inscrito: {
+    bg: "bg-sky-50 text-sky-800 border-sky-200/80",
+    dot: "bg-sky-500",
+  },
+  presente: {
+    bg: "bg-emerald-50 text-emerald-800 border-emerald-200/80",
+    dot: "bg-emerald-500",
+  },
+  ausente: {
+    bg: "bg-rose-50 text-rose-800 border-rose-200/80",
+    dot: "bg-rose-500",
+  },
 }
 
 export default function Badge({ texto, tom }: { texto: string; tom?: string }) {
-  const classeCor = CORES[tom ?? texto.toLowerCase()] ?? "bg-slate-100 text-slate-600"
+  const chave = (tom ?? texto).toLowerCase().replace(/\s+/g, "_")
+  const config = CORES[chave] ?? {
+    bg: "bg-slate-100 text-slate-700 border-slate-200",
+    dot: "bg-slate-400",
+  }
+
   return (
-    <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-semibold capitalize ${classeCor}`}>
-      {texto}
+    <span
+      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider border shadow-2xs ${config.bg}`}
+    >
+      <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
+      <span>{texto.replace("_", " ")}</span>
     </span>
   )
 }
